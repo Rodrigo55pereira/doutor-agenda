@@ -21,6 +21,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
+import PasswordField from './form/password-field';
+
 const loginScheme = z.object({
   email: z
     .string()
@@ -74,19 +76,7 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Senha</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Digite sua senha" {...field} type="password" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <PasswordField control={form.control} name="password" />
           </CardContent>
           <CardFooter>
             <Button type="submit" className="w-full">
