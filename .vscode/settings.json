@@ -1,20 +1,40 @@
 {
+  // ===============================
+  // FORMATADOR (OBRIGATÓRIO)
+  // ===============================
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+
+  // ===============================
+  // PRETTIER (GARANTIR QUE MANDA)
+  // ===============================
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+
+  // ===============================
+  // IA / SUGESTOES (PODE MANTER)
+  // ===============================
   "editor.inlineSuggest.enabled": true,
-  "editor.suggest.preview": true,
-  "editor.suggest.showStatusBar": true,
   "editor.tabCompletion": "on",
-  "editor.acceptSuggestionOnCommitCharacter": true,
-  "editor.acceptSuggestionOnEnter": "on",
-  "editor.suggestSelection": "first",
-  "editor.wordBasedSuggestions": "allDocuments",
+
+  // ===============================
+  // TYPESCRIPT / JS
+  // ===============================
   "typescript.suggest.autoImports": true,
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "typescript.preferences.includePackageJsonAutoImports": "on",
   "javascript.suggest.autoImports": true,
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "javascript.preferences.includePackageJsonAutoImports": "on",
-  "files.associations": {
-    "*.ts": "typescript",
-    "*.tsx": "typescriptreact"
-  }
+  "javascript.updateImportsOnFileMove.enabled": "always"
 }
