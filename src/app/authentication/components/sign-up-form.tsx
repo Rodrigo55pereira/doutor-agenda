@@ -70,7 +70,11 @@ const SignUpForm = () => {
           router.push('/dashboard');
         },
         onError: (ctx) => {
-          toast.error(ctx.error.message);
+          if (ctx.error.code === 'USER_ALREADY_EXISTS') {
+            toast.error('E-mail já cadastrado.');
+            return;
+          }
+          toast.error('Erro ao criar conta.');
         },
       },
     );
