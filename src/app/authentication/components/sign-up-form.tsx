@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import z from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -67,6 +68,9 @@ const SignUpForm = () => {
       {
         onSuccess: () => {
           router.push('/dashboard');
+        },
+        onError: (ctx) => {
+          toast.error(ctx.error.message);
         },
       },
     );

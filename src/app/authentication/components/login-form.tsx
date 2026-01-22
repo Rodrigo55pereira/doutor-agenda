@@ -1,5 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import z from 'zod';
 
 import { Button } from '@/components/ui/button';
@@ -20,6 +23,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { authClient } from '@/lib/auth-client';
 
 import PasswordField from './form/password-field';
 
@@ -41,6 +45,7 @@ const loginScheme = z.object({
 type LoginScheme = z.infer<typeof loginScheme>;
 
 const LoginForm = () => {
+  const router = useRouter();
   // Aqui criamos o formulário com useForm do React Hook Form.
   const form = useForm<LoginScheme>({
     resolver: zodResolver(loginScheme), // Valida os dados usando o esquema zod antes de enviar o form.
@@ -50,8 +55,21 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values: LoginScheme) => {
-    console.log(values);
+  const onSubmit = async (values: LoginScheme) => {
+    await authClient.signIn.email(
+      {
+        email: values.email,
+        password: values.password,
+      },
+      {
+        onSuccess: () => {
+          router.push('/dashboard');
+        },
+        onError: () => {
+          toast.error('E-mail ou senha inválidos.');
+        },
+      },
+    );
   };
 
   return (
@@ -79,8 +97,16 @@ const LoginForm = () => {
             <PasswordField control={form.control} name="password" />
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full">
-              Entrar
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                'Entrar'
+              )}
             </Button>
           </CardFooter>
         </form>
