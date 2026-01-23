@@ -12,6 +12,14 @@ export const auth = betterAuth({
     schema,
   }),
 
+  // adicionando autenticacao do google
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    },
+  },
+
   // Configuração dos schemas
   user: {
     modelName: 'usersTable',
