@@ -27,7 +27,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 
-import PasswordField from './form/password-field';
+import PasswordField from './_form/password-field';
 
 const registerScheme = z.object({
   name: z.string().trim().min(1, { message: 'O nome é obrigatório' }),
@@ -127,7 +127,7 @@ const SignUpForm = () => {
           <CardFooter>
             <Button
               type="submit"
-              className="w-full"
+              className="w-full cursor-pointer"
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting ? (

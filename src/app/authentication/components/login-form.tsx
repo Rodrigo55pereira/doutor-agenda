@@ -28,7 +28,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 
-import PasswordField from './form/password-field';
+import PasswordField from './_form/password-field';
 
 const loginScheme = z.object({
   email: z
@@ -110,7 +110,7 @@ const LoginForm = () => {
             <div className="flex w-full flex-col gap-2">
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full cursor-pointer"
                 disabled={form.formState.isSubmitting}
               >
                 {form.formState.isSubmitting ? (
@@ -121,7 +121,7 @@ const LoginForm = () => {
               </Button>
               <Button
                 variant="outline"
-                className="w-full"
+                className="w-full cursor-pointer"
                 type="button"
                 onClick={() => handleGoogleLogin()}
               >
