@@ -100,7 +100,7 @@ export const doctorsTable = pgTable('doctors', {
   // 0 - domingo, 1 - segunda, 2 - terça, 3 - quarta, 4 - quinta, 5 - sexta, 6 - sábado
   availableFromWeekDay: integer('available_from_week_day').notNull(),
   availableToWeekDay: integer('available_to_week_day').notNull(),
-  availableFromtime: time('available_from_time').notNull(),
+  availableFromTime: time('available_from_time').notNull(),
   availableToTime: time('available_to_time').notNull(),
 
   appointmentPriceInCents: integer('appointment_price_in_cents').notNull(),
