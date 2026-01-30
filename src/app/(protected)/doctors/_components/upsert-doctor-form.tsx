@@ -78,6 +78,7 @@ interface UpsertDoctorFormProps {
 
 const UpsertDoctorForm = ({ doctor, onSuccess }: UpsertDoctorFormProps) => {
   const form = useForm<FormValues>({
+    //shouldUnregister: true, // faz com que resete as info depois que eu fechar o dialog.
     resolver: zodResolver(formScheme),
     defaultValues: {
       name: doctor?.name ?? '',
