@@ -1,13 +1,26 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { TrashIcon } from 'lucide-react';
 import { useAction } from 'next-safe-action/hooks';
 import { useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { toast } from 'sonner';
 import z from 'zod';
 
+import { deleteDoctor } from '@/actions/delete-doctor';
 import { upsertDoctor } from '@/actions/upsert-doctor';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import {
   DialogContent,
@@ -112,6 +125,21 @@ const UpsertDoctorForm = ({ doctor, onSuccess }: UpsertDoctorFormProps) => {
     if (!doctor) {
       form.reset();
     }
+  };
+
+  const deleteDoctorAction = useAction(deleteDoctor, {
+    onSuccess: () => {
+      toast.success('Médico deletado com sucesso!');
+      onSuccess?.();
+    },
+    onError: () => {
+      toast.error('Erro ao deletar o médico');
+    },
+  });
+
+  const handleDeleteDoctorClick = () => {
+    if (!doctor) return;
+    deleteDoctorAction.execute({ id: doctor.id });
   };
 
   return (
@@ -380,17 +408,46 @@ const UpsertDoctorForm = ({ doctor, onSuccess }: UpsertDoctorFormProps) => {
             )}
           />
           <DialogFooter>
-            <Button
-              type="submit"
-              disabled={upsertDoctorAction.isPending}
-              className="w-full"
-            >
-              {upsertDoctorAction.isPending
-                ? 'Salvando...'
-                : doctor
-                  ? 'Salvar'
-                  : 'Adicionar'}
-            </Button>
+            <div className="w-full space-y-2">
+              <Button
+                type="submit"
+                disabled={upsertDoctorAction.isPending}
+                className="w-full"
+              >
+                {upsertDoctorAction.isPending
+                  ? 'Salvando...'
+                  : doctor
+                    ? 'Salvar'
+                    : 'Adicionar'}
+              </Button>
+              {doctor && (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button className="w-full" variant="outline">
+                      <TrashIcon />
+                      Deletar Médico
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Tem certeza que deseja deletar esse médico?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Essa ação não pode ser revertida. Isso irá deletar o médico e
+                        todas as consultas agendadas.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleDeleteDoctorClick}>
+                        Deletar
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
+            </div>
           </DialogFooter>
         </form>
       </Form>
