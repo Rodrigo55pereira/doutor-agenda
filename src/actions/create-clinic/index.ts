@@ -25,6 +25,5 @@ export const createClinic = async (name: string) => {
     userId: session.user.id,
     clinicId: clinic.id,
   });
-
   redirect('/dashboard');
 };
