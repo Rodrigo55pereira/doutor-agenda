@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TrashIcon } from 'lucide-react';
 import { useAction } from 'next-safe-action/hooks';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { toast } from 'sonner';
@@ -85,13 +86,14 @@ const formScheme = z
 type FormValues = z.infer<typeof formScheme>;
 
 interface UpsertDoctorFormProps {
+  isOpen: boolean;
   doctor?: typeof doctorsTable.$inferSelect;
   onSuccess?: () => void;
 }
 
-const UpsertDoctorForm = ({ doctor, onSuccess }: UpsertDoctorFormProps) => {
+const UpsertDoctorForm = ({ isOpen, doctor, onSuccess }: UpsertDoctorFormProps) => {
   const form = useForm<FormValues>({
-    //shouldUnregister: true, // faz com que resete as info depois que eu fechar o dialog.
+    shouldUnregister: true, // faz com que resete as info depois que eu fechar o dialog.
     resolver: zodResolver(formScheme),
     defaultValues: {
       name: doctor?.name ?? '',
@@ -122,9 +124,6 @@ const UpsertDoctorForm = ({ doctor, onSuccess }: UpsertDoctorFormProps) => {
       ...values,
       appointmentPriceInCents: values.appointmentPriceInCents * 100,
     });
-    if (!doctor) {
-      form.reset();
-    }
   };
 
   const deleteDoctorAction = useAction(deleteDoctor, {
@@ -141,6 +140,22 @@ const UpsertDoctorForm = ({ doctor, onSuccess }: UpsertDoctorFormProps) => {
     if (!doctor) return;
     deleteDoctorAction.execute({ id: doctor.id });
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      form.reset({
+        name: doctor?.name ?? '',
+        specialty: doctor?.specialty ?? '',
+        appointmentPriceInCents: doctor?.appointmentPriceInCents
+          ? doctor.appointmentPriceInCents / 100
+          : 0,
+        availableFromWeekDay: doctor?.availableFromWeekDay ?? 1,
+        availableToWeekDay: doctor?.availableToWeekDay ?? 5,
+        availableFromTime: doctor?.availableFromTime ?? '',
+        availableToTime: doctor?.availableToTime ?? '',
+      });
+    }
+  }, [isOpen, form, doctor]);
 
   return (
     <DialogContent>
